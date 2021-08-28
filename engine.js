@@ -6,19 +6,31 @@
 	Username: https12345678
 */
 
-var extemplate = '<svg version="1.1" width="100px" height="100px">\n\n</svg>';
 var engine = {
 	time: 0,
 	timer: setInterval(tick, 1),
 	active: false,
 	template: "blank",
 	init: function() {
+		function getTemplate() {
+			var retVal = null;
+			while (retVal == null) {
+				retVal = prompt("Template:");
+			}
+			if (models.includes(retVal)) {
+				return(retVal);
+			} else {
+				alert(retVal + " is not a valid template.");
+				return(getTemplate());
+			}
+		}
 		console.log("Loading template...");
+		var template = getTemplate();
 		var xhttp = new XMLHttpRequest();
 		xhttp.onload = function() {
 			document.getElementById("svgEditor").value = this.responseText;
 		}
-		xhttp.open("GET", "Templates/SVG/blank.txt");
+		xhttp.open("GET", "Templates/SVG/" + template + ".txt");
 		xhttp.send();
 		console.log("Template loaded.");
 		self.active = true;
